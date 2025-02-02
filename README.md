@@ -1,6 +1,6 @@
 # Jim_Bridge
 
-QUICK edit for enabling stashes for shops, and stash crafting functionality with the Latest CodeM Inventory Remake. 
+QUICK edit for enabling stashes for shops, and stash crafting functionality with the Latest CodeM Inventory Remake. make sure you still put items in qb-core/shared/items.lua as well as in the inventory itemslist.lua
 
 This script is intended to be used with my all my scripts (soon)
 
