@@ -376,8 +376,30 @@ function hasItem(items, amount, src) local amount = amount and amount or 1
 
     elseif GetResourceState(CodeMInv):find("start") then
         foundInv = CodeMInv
-        if src then grabInv = exports[CodeMInv]:GetUserInventory(src)
-        else grabInv = exports[CodeMInv]:GetClientPlayerInventory() end
+        if src then 
+            -- Server-side inventory check
+            grabInv = exports[CodeMInv]:GetInventory(nil, tonumber(src))
+        else 
+            -- Client-side inventory check
+            grabInv = exports[CodeMInv]:getUserInventory()
+        end
+        
+        if grabInv then
+            local hasTable = {}
+            for item, amount in pairs(items) do
+                local count = 0
+                for _, itemData in pairs(grabInv) do
+                    if itemData and (itemData.name == item) then 
+                        count = count + (itemData.amount or 1)
+                    end
+                end
+                hasTable[item] = { hasItem = count >= amount, count = count }
+            end
+            for k, v in pairs(hasTable) do 
+                if not v.hasItem then return false, hasTable end 
+            end
+            return true, hasTable
+        end
 
     elseif GetResourceState(QBInv):find("start") then
         foundInv = QBInv
